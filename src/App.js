@@ -13,7 +13,7 @@ function App() {
     return (
         <>
             <Router history={history}>
-                <div className='bg-green-500 text-white px-4 py-6 text-xl font-bold'><Link to={'/'}>Home </Link> </div>
+                <div className='bg-green-700 text-white px-4 py-6 text-xl font-bold'><Link to={'/'}>Home </Link> </div>
                 <Switch>
                     <Route exact path="/posts/:id" component={routerProps => (<PostContainer {...routerProps} />)} />
                     <Route path="/" component={PostsContainer} />

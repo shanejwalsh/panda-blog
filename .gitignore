@@ -7,7 +7,7 @@
 package-lock.json
 
 # assets
-assets/main.css
+src/assets/main.css
 
 # production
 /build

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const SearchInput = ({ onChange, name, label }) => {
+const SearchInput = ({ onChange, name, label, value }) => {
     return (
         <div className="flex-1 mb-2 w-full flex flex-col">
             <label
@@ -14,6 +14,7 @@ const SearchInput = ({ onChange, name, label }) => {
                 className='border p-1'
                 type="text"
                 placeholder='Search...'
+                value={value}
             />
         </div>
     );

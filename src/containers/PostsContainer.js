@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import PostTitleCard from '../components/PostCard';
 import SearchAndFilterContainer from './SearchAndFilterContainer';
 
-import { sortOldestToNewest, sortNewestToOldest, debounce } from '../helpers';
+import { sortPosts, debounce } from '../helpers';
 import * as API from '../services/APi';
 
 const isPreviouslyRead = id => localStorage.getItem(`post-${id}`);
@@ -21,76 +21,67 @@ const renderPostCards = (posts) => {
 
 const PostsContainer = () => {
 
-    const [posts, setposts] = useState([]);
-    const [filteredPosts, setFilteredPosts] = useState([]);
+    const [originalPosts, setOriginalPosts] = useState([]);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [sortOrder, setSortOrder] = useState('asc');
+
+    const [postsToDisplay, setPostsToDisplay] = useState([]);
     const [apiError, setApiError] = useState(false);
-    const [order, setOrder] = useState('');
     const [unreadFilter, setUnreadFilter] = useState(false);
 
-    const handleSearch = debounce(event => {
-        const term = event.target.value.toLowerCase();
 
-        let postsToDisplay = posts;
+    const handleSearch = event => {
+        setSearchTerm(event.target.value);
+    };
 
-        if (unreadFilter) {
-            postsToDisplay = postsToDisplay.filter((post =>!isPreviouslyRead(post.id)));
-        }
-
-        if (!term) {
-            return setFilteredPosts(postsToDisplay);
-        }
-
-        setFilteredPosts(
-            postsToDisplay.filter(post =>
-                post.author.toLowerCase().includes(term) || post.title.toLowerCase().includes(term)
-            )
-        );
-    }, 250);
-
-    const handleUnreadChange = event => {
-        const { value } = event.target;
-
+    const handleUnreadChange = () => {
         setUnreadFilter(!unreadFilter);
-
-        if (value === 'all') {
-            return setFilteredPosts(posts);
-        }
-
-        setFilteredPosts(
-            posts.filter(post =>!isPreviouslyRead(post.id))
-        );
     };
 
     const handleSortChange = event => {
+        setSortOrder(event.target.value);
+    };
 
+    const fetchPosts = async () => {
+        try {
+            const fetchedPosts = await API.getPosts();
+            setOriginalPosts(fetchedPosts);
+            setPostsToDisplay(sortPosts(fetchedPosts, sortOrder));
+        } catch (error) {
+            setApiError(true);
+        }
+    };
 
-        setOrder(event.target.value);
-
-        let postsToDisplay = posts;
+    const setFilters = () => {
+        let posts = originalPosts.filter(post =>
+            post.author.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+                || post.title.toLowerCase().includes(searchTerm.toLowerCase())
+        );
 
         if (unreadFilter) {
-            postsToDisplay = postsToDisplay.filter((post =>!isPreviouslyRead(post.id)));
+            posts = posts.filter(post => isPreviouslyRead(post.id));
         }
 
-        if (event.target.value === 'desc') {
-            return  setFilteredPosts(sortNewestToOldest(postsToDisplay));
-        }
-        return  setFilteredPosts(sortOldestToNewest(postsToDisplay));
+        return posts;
     };
 
     useEffect(() => {
-        const fetchPosts = async () => {
-            try {
-                const fetchedPosts = await API.getPosts();
-                setposts(sortOldestToNewest(fetchedPosts));
-                setFilteredPosts(fetchedPosts);
-            } catch (error) {
-                setApiError(true);
-            }
-        };
-        fetchPosts();
+        if (!originalPosts.length) {
+            fetchPosts();
+        }
 
-    } ,[]);
+        if (!searchTerm && unreadFilter) {
+            postsToDisplay([...originalPosts]);
+        } else {
+            setPostsToDisplay(setFilters());
+        }
+
+        setPostsToDisplay(sortPosts(postsToDisplay, sortOrder));
+    } ,[
+        searchTerm,
+        unreadFilter,
+        sortOrder
+    ]);
 
     return (
         <>
@@ -98,7 +89,9 @@ const PostsContainer = () => {
                 <h1 className="text-4xl md:text-6xl font-bold my-4">Panda Posts</h1>
 
                 <SearchAndFilterContainer
-                    handleSearchChange={(e) => handleSearch(e)}
+                    handleSearchChange={handleSearch}
+                    searchValue={searchTerm}
+                    sortOrder={sortOrder}
                     handleSortChange={handleSortChange}
                     handleFilterChange={handleUnreadChange}
                 />
@@ -106,7 +99,7 @@ const PostsContainer = () => {
                 <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     {apiError
                         ? <h2 className="text-3xl font-bold">Unable to get posts, please try again.</h2>
-                        : renderPostCards(filteredPosts)}
+                        : renderPostCards(postsToDisplay)}
                 </div>
             </div>
         </>
