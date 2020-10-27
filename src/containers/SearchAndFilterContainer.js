@@ -19,8 +19,8 @@ const SearchAndFilterContainer = ({ searchValue, handleSearchChange, handleSortC
                 label={'Change Sort Order'}
                 onChange={handleSortChange}
                 options={[
-                    {label: 'Oldest to newest', value: 'asc'},
-                    {label: 'Newest to oldest', value: 'desc'}
+                    {label: 'Oldest to newest', value: 'desc'},
+                    {label: 'Newest to oldest', value: 'asc'}
                 ]}
             />
 

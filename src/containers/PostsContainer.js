@@ -1,34 +1,35 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import PostTitleCard from '../components/PostCard';
 import SearchAndFilterContainer from './SearchAndFilterContainer';
 
 import { sortPosts, debounce } from '../helpers';
 import * as API from '../services/APi';
 
-const isPreviouslyRead = id => localStorage.getItem(`post-${id}`);
-
-const renderPostCards = (posts) => {
-    return  posts.map(post => {
-        return (
-            <PostTitleCard
-                key={post.id}
-                post={post}
-                isPreviouslyRead={isPreviouslyRead(post.id)}
-            />
-        );
-    });
-};
 
 const PostsContainer = () => {
-
     const [originalPosts, setOriginalPosts] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const [sortOrder, setSortOrder] = useState('asc');
+    const [sortOrder, setSortOrder] = useState('desc');
 
     const [postsToDisplay, setPostsToDisplay] = useState([]);
     const [apiError, setApiError] = useState(false);
     const [unreadFilter, setUnreadFilter] = useState(false);
 
+
+    const isPreviouslyRead = id => localStorage.getItem(`post-${id}`);
+
+    const renderPostCards = (posts) => {
+
+        return  posts.map(post => {
+            return (
+                <PostTitleCard
+                    key={post.id}
+                    post={post}
+                    isPreviouslyRead={isPreviouslyRead(post.id)}
+                />
+            );
+        });
+    };
 
     const handleSearch = event => {
         setSearchTerm(event.target.value);
@@ -59,7 +60,7 @@ const PostsContainer = () => {
         );
 
         if (unreadFilter) {
-            posts = posts.filter(post => isPreviouslyRead(post.id));
+            posts = posts.filter(post => !isPreviouslyRead(post.id));
         }
 
         return posts;
@@ -70,14 +71,18 @@ const PostsContainer = () => {
             fetchPosts();
         }
 
-        if (!searchTerm && unreadFilter) {
-            postsToDisplay([...originalPosts]);
+        let posts;
+
+        if (!searchTerm && !unreadFilter) {
+            posts = [...originalPosts];
+
         } else {
-            setPostsToDisplay(setFilters());
+            posts = (setFilters());
         }
 
-        setPostsToDisplay(sortPosts(postsToDisplay, sortOrder));
-    } ,[
+        setPostsToDisplay(sortPosts(posts, sortOrder));
+
+    }, [
         searchTerm,
         unreadFilter,
         sortOrder
