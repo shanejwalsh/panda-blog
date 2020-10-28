@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import PostTitleCard from '../components/PostCard';
 import SearchAndFilterContainer from './SearchAndFilterContainer';
 
-import { sortPosts, debounce } from '../helpers';
+import { sortPosts } from '../helpers';
 import * as API from '../services/APi';
 
 
@@ -81,7 +81,6 @@ const PostsContainer = () => {
         }
 
         setPostsToDisplay(sortPosts(posts, sortOrder));
-
     }, [
         searchTerm,
         unreadFilter,
