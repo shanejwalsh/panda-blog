@@ -20,13 +20,10 @@ const PostContainer = props => {
         return getPost(props.match.params.id);
     };
 
-
     useEffect(() => {
         const displayCurrentPost = async () => {
             const postToDisplay = await setCurrentPost();
             setPost(postToDisplay);
-
-
 
             if (!localStorage.getItem(`post-${postToDisplay.id}`)) {
                 localStorage.setItem(`post-${postToDisplay.id}`, true );
@@ -38,7 +35,7 @@ const PostContainer = props => {
     }, []);
 
     return (
-        <div className="m-auto p-20 max-w-4xl">
+        <div className="m-auto p-10 md:p-15 max-w-4xl">
             <Post post={post}/>
             <hr className="my-4"></hr>
             <CommentSection postId={post.id} />

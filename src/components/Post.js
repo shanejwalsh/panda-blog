@@ -8,17 +8,22 @@ const Post = ({ post }) => {
 
     const { title, description, author, publish_date, content } = post;
     return (
-        <div className="">
-            <h1 className="text-3xl md:text-4xl font-bold mb-0">{title}</h1>
-            <h2 className="text-xl md:2xl text-gray-600">{description}</h2>
-            <div className="my-4">
-                <p><i> <Icon type='user' color='blue' /> By: {author}</i></p>
-                <p className="italic">Published: {parseDate(publish_date)}</p>
-            </div>
+        <>
             <div>
-                <p>{(content || '').replace(/<\/?p>/g, '')}</p>
+                <img className="max-h-full" src="https://source.unsplash.com/random/800x250" alt=""/>
             </div>
-        </div>
+            <div className="">
+                <h1 className="text-3xl md:text-4xl font-bold mb-0">{title}</h1>
+                <h2 className="text-xl md:2xl text-gray-600">{description}</h2>
+                <div className="my-4">
+                    <p><i> <Icon type='user' color='blue' /> By: {author}</i></p>
+                    <p className="italic">Published: {parseDate(publish_date)}</p>
+                </div>
+                <div>
+                    <p>{(content || '').replace(/<\/?p>/g, '')}</p>
+                </div>
+            </div>
+        </>
     );
 };
 

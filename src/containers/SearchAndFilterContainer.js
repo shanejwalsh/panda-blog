@@ -6,7 +6,7 @@ import SelectFilter from '../components/SelectFilter';
 
 const SearchAndFilterContainer = ({ searchValue, handleSearchChange, handleSortChange, handleFilterChange}) => {
     return (
-        <div className="my-2 sm:flex gap-4" >
+        <div className="my-2 sm:flex gap-4">
             <SearchInput
                 onChange={handleSearchChange}
                 name='search'
@@ -41,7 +41,7 @@ SearchAndFilterContainer.propTypes = {
     handleFilterChange: PropTypes.func,
     handleSortChange: PropTypes.func,
     handleSearchChange: PropTypes.func,
-
+    searchValue: PropTypes.string,
 };
 
 export default SearchAndFilterContainer;

@@ -19,7 +19,7 @@ const PostCard = ({ post, isPreviouslyRead }) => {
     } = post;
 
     return (
-        <div className="relative hover:shadow-lg p-4 rounded-lg hover:bg-gray-200 my-1 shadow-sm border border-gray transition-all duration-200">
+        <div className="relative hover:shadow-lg p-4 rounded-lg hover:bg-gray-200 my-1 shadow-sm border border-gray transition-all duration-500">
             <Link
                 to={{
                     pathname: `posts/${id}`,

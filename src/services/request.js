@@ -16,7 +16,7 @@ const baseRequest = async (url, path, options = {}) => {
 export const defaultPostConfig = {
     method: 'POST',
     headers: {
-        'content-type': 'Application/json'
+        'content-type': 'Application/json',
     }
 };
 
