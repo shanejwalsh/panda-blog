@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Button from './Button';
+
 const AddCommentForm = ({
     user,
     content,
@@ -37,7 +39,13 @@ const AddCommentForm = ({
                         onChange={onContentChange}
                     />
                 </div>
-                <button className="py-2 bg-green-400 text-white rounded-sm" htmlFor="comment-form" type="submit">Add Comment</button>
+                <Button
+                    type='submit'
+                    label='Add Comment'
+                    disabled={!(content.length && user.length)}
+                    htmlFor='comment-form'
+                />
+
             </form>
 
             {showError && <div className="text-red-600">Please fill out all fields</div>}
