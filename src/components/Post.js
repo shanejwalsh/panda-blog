@@ -36,7 +36,6 @@ Post.propTypes = {
         content: PropTypes.string,
         publish_date: PropTypes.string
     })
-
 };
 
 export default Post;

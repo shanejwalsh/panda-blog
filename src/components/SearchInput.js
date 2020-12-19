@@ -24,6 +24,7 @@ SearchInput.propTypes = {
     onChange: PropTypes.func,
     label: PropTypes.string,
     name: PropTypes.string,
+    value: PropTypes.string,
 };
 
 export default SearchInput;
