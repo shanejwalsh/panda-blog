@@ -8,7 +8,6 @@ import { getComments, addComment } from '../services/APi';
 
 const CommentSection = ({ postId }) => {
 
-
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
     const [user, setUser] = useState('');

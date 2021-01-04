@@ -81,12 +81,11 @@ const PostsContainer = () => {
         searchTerm,
         unreadFilter,
         sortOrder
-
     ]);
 
     return (
         <div className="margin-auto p-12">
-            <h1 className="text-4xl md:text-6xl font-bold my-4">Panda Posts</h1>
+            <h1 className="text-5xl md:text-6xl font-bold my-4">Panda Posts</h1>
 
             { apiError ? <div className="text-2xl">Unable to fetch posts 😢</div> :
                 <>
