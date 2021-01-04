@@ -7,7 +7,6 @@ import Icon from './Icon';
 
 import { parseDate } from '../helpers';
 
-
 const PostCard = ({ post, isPreviouslyRead }) => {
 
     const {

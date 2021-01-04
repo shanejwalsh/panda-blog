@@ -1,7 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = ({ disabled, label, type, htmlFor, bg, color }) => {
+import Icon from '../components/Icon';
+
+const Button = ({
+    disabled,
+    label,
+    type,
+    htmlFor,
+    bg,
+    color,
+    isLoading
+}) => {
     return (
         !disabled ?
             <button
@@ -12,17 +22,17 @@ const Button = ({ disabled, label, type, htmlFor, bg, color }) => {
             </button>
             :
             <button
-                onClick={e => e.preventDefault() }
+                onClick={e => e.preventDefault()}
                 className="focus:outline-none cursor-not-allowed py-2 bg-gray-400 text-white rounded-sm"
             >
-                {label}
+                {isLoading ? <Icon spin type='loading'/> : label}
             </button>
-
     );
 };
 
 Button.propTypes = {
     disabled: PropTypes.bool,
+    isLoading: PropTypes.bool,
     label: PropTypes.string.isRequired,
     htmlFor: PropTypes.string,
     type: PropTypes.string,

@@ -14,7 +14,7 @@ const CommentSection = ({ postId }) => {
     const [commentsFetched, setCommentsFetched] = useState(false);
     const [showError, setShowError] = useState(false);
     const [showComments, setShowComments] = useState(false);
-
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const clearInputs = () => {
         setContent('');
@@ -24,7 +24,7 @@ const CommentSection = ({ postId }) => {
     const handleCommentSubmission = async e => {
         setShowError(false);
 
-        e.preventDefault();
+        e.preventDefault();'';
 
         if (!content || !user) {
             return setShowError(true);
@@ -38,7 +38,6 @@ const CommentSection = ({ postId }) => {
         });
 
         setComments([...comments, newComment]);
-
         clearInputs();
     };
 
@@ -62,20 +61,26 @@ const CommentSection = ({ postId }) => {
                 className="outline-none"
                 onClick={handleShowCommentClick}>
                 <span className="mr-2">{showComments ? 'Hide' : 'Show'} Comments</span>
-                {<Icon type={showComments ?  'chevronDown' : 'chevronRight'} className={'transition rotate-45'} />}
+                {<Icon
+                    type={showComments ?  'chevronDown' : 'chevronRight'}
+                    className={'transition rotate-45'}
+                />}
             </button>
             {showComments &&
-
                 <div className="md:w-3/5">
                     <AddCommentForm
                         user={user}
                         content={content}
-                        onSubmit={handleCommentSubmission}
+                        onSubmit={(e) => {
+                            setIsSubmitting(true);
+                            handleCommentSubmission(e)
+                                .then(() => console.log('hi'));
+                        }}
                         onUserChange={event => setUser(event.target.value)}
                         onContentChange={event => setContent(event.target.value)}
                         showError={showError}
+                        isSubmitting={isSubmitting}
                     />
-
                     {comments.length ?
                         <>
                             <ul>
