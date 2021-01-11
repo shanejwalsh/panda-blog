@@ -12,6 +12,9 @@ const AddCommentForm = ({
     showError,
     isSubmitting,
 }) => {
+
+    const fieldsHaveValues = content.length && user.length
+
     return (
         <div className="my-5">
             <form className="flex flex-col" id="comment-form" name="comment-form" onSubmit={onSubmit}>
@@ -42,7 +45,7 @@ const AddCommentForm = ({
                 <Button
                     type='submit'
                     label='Add Comment'
-                    disabled={!(content.length && user.length)}
+                    disabled={!fieldsHaveValues}
                     htmlFor='comment-form'
                     isLoading={isSubmitting}
                 />

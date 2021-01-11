@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import AddCommentForm from './AddCommentForm';
 import Comment from './Comment';
@@ -6,7 +6,9 @@ import Icon from './Icon';
 
 import { getComments, addComment } from '../services/APi';
 
-const CommentSection = ({ postId }) => {
+function CommentSection({ postId }){
+
+    console.log('%cCommentSection.js line:11 "section"', 'color: #007acc;', "section");
 
     const [comments, setComments] = useState([]);
     const [content, setContent] = useState('');
@@ -24,26 +26,28 @@ const CommentSection = ({ postId }) => {
     const handleCommentSubmission = async e => {
         setShowError(false);
 
-        e.preventDefault();'';
+        e.preventDefault();
 
         if (!content || !user) {
             return setShowError(true);
         }
 
-        const newComment = await addComment(postId, {
+        addComment(postId, {
             postId,
             user,
             content,
             date: new Date(),
+        }).then(newComment => {
+            setComments([...comments, newComment]);
+            clearInputs();
+            setIsSubmitting(false);
         });
-
-        setComments([...comments, newComment]);
-        clearInputs();
     };
 
     const toggleShowComments = () => setShowComments(!showComments);
 
-    const handleShowCommentClick = async () => {
+    const handleShowCommentClick = React.useCallback(async () => {
+
 
         if (!commentsFetched) {
             const fetchedComments = await getComments(postId);
@@ -52,7 +56,7 @@ const CommentSection = ({ postId }) => {
         }
 
         toggleShowComments();
-    };
+    }, [postId, showComments]);
 
     return (
         <>
@@ -74,7 +78,6 @@ const CommentSection = ({ postId }) => {
                         onSubmit={(e) => {
                             setIsSubmitting(true);
                             handleCommentSubmission(e)
-                                .then(() => console.log('hi'));
                         }}
                         onUserChange={event => setUser(event.target.value)}
                         onContentChange={event => setContent(event.target.value)}

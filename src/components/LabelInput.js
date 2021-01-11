@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const LabelInput = ({ onChange, value, label, name, type }) => {
+
+const LabelInput =  ({ onChange, value, label, name, type }) => {
     return (
         <div className="my-2 flex flex-col">
             <label className="text-gray-600 mb-1" htmlFor={name}>
